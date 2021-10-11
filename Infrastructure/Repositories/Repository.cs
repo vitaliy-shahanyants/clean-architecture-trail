@@ -21,14 +21,16 @@ namespace Infrastructure.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetByIdAsync(long id)
         {
-            return await _context.Set<T>().Where(predicate).FirstOrDefaultAsync();
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public Task<T> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            throw new System.NotImplementedException();
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public Task UpdateAsync(T entity)
